@@ -14,6 +14,9 @@ import javafx.event.EventHandler;
 import javafx.scene.text.Font;
 import javafx.scene.paint.*;
 
+/*
+ * This class handles the play of the game itself.
+ */
 public class TypeRacer {
 	File location;
 	TextListener words = null;
@@ -27,32 +30,28 @@ public class TypeRacer {
 
 	private int secondsPassed, characterCount, mode;
 
-
 	TypeRacer(int chosenOpt, File filename, int count) {
-		mode = chosenOpt; //format of words
-		location = filename; //file
-		words = new TextListener(filename); //reads file
-		getText(); //gets lines of text from file
+		mode = chosenOpt; // format of words
+		location = filename; // file
+		words = new TextListener(filename); // reads file
+		getText(); // gets lines of text from file
 		on = 0;
 		gameStage = new Stage();
 		contentA.setAlignment(Pos.CENTER);
-		characterCount = count; //total character count in the file
+		characterCount = count; // total character count in the file
 		secondsPassed = 0;
 
-		if (mode == 2) 
-		{
+		if (mode == 2) {
 			contentA.setAlignment(Pos.CENTER_LEFT);
 		}
 		content.setAlignment(Pos.TOP_CENTER);
 		content.getChildren().add(new Label("Typing Game"));
 		gameScene = new Scene(content, 600, 300);
 		gameStage.setScene(gameScene);
-		if (mode == 0 || mode == 1) 
-		{
+		if (mode == 0 || mode == 1) {
 			content.getChildren().add(contentA);
 		}
-		if (mode == 2) 
-		{
+		if (mode == 2) {
 			contentB.setHbarPolicy(ScrollBarPolicy.NEVER);
 			contentB.setVbarPolicy(ScrollBarPolicy.ALWAYS);
 			content.getChildren().add(contentB);
@@ -67,10 +66,10 @@ public class TypeRacer {
 		});
 		gameStage.show();
 
-		t.scheduleAtFixedRate(task, 1000, 1000); //starts timer (goes by 1 sec at a time)
+		t.scheduleAtFixedRate(task, 1000, 1000); // starts timer (goes by 1 sec at a time)
 	}
 
-	//timer
+	// timer
 	Timer t = new Timer();
 	TimerTask task = new TimerTask() {
 		public void run() {
@@ -81,18 +80,16 @@ public class TypeRacer {
 
 	public void checkLet(String let) {
 		char w = let.charAt(0);
-		
-		//checks first char
-		if (let.charAt(0) != (currentString.charAt(on))) 
-		{
+
+		// checks first char
+		if (let.charAt(0) != (currentString.charAt(on))) {
 			drawWord(false);
 		}
-		//checks the rest of the text
-		else 
-		{
+		// checks the rest of the text
+		else {
 			on++;
 			drawWord(true);
-			if (on == currentString.length()) //checks if the char is the last char in the file
+			if (on == currentString.length()) // checks if the char is the last char in the file
 			{
 				getText();
 			}
@@ -109,23 +106,19 @@ public class TypeRacer {
 				l.setTextFill(Color.GREEN);
 				l.setUnderline(true);
 			}
-			if (p == on) 
-			{
-				if (correct) 
-				{
-					l.setTextFill(Color.BLUE); //char that the player is on
-				} 
-				else 
-				{
-					l.setTextFill(Color.RED); //char that the player got incorrect
+			if (p == on) {
+				if (correct) {
+					l.setTextFill(Color.BLUE); // char that the player is on
+				} else {
+					l.setTextFill(Color.RED); // char that the player got incorrect
 					l.setUnderline(true);
 				}
 			}
 			if (p > on) {
-				l.setTextFill(Color.DARKGRAY); //chars that the player didn't get to yet
+				l.setTextFill(Color.DARKGRAY); // chars that the player didn't get to yet
 			}
 			l.setAlignment(Pos.CENTER);
-			l.setFont(new Font("Times New Roman", 24)); //font and size
+			l.setFont(new Font("Times New Roman", 24)); // font and size
 			contentA.getChildren().add(l);
 			p++;
 		}
@@ -137,35 +130,28 @@ public class TypeRacer {
 		System.out.println("test");
 		switch (mode) {
 			case 0:
-				currentString = words.firstOpt(); //word by word
+				currentString = words.firstOpt(); // word by word
 				break;
 			case 1:
-				currentString = words.secondOpt(); //one line of scrolling text
+				currentString = words.secondOpt(); // one line of scrolling text
 				break;
 			case 2:
-				currentString = words.thirdOpt(); //entire file
+				currentString = words.thirdOpt(); // entire file
 				break;
-
 			default:
 				System.out.println("Error");
 				break;
 		}
-		
-		//if there is no more text, the game screen closes and wpm is calculated
-		if (currentString == null) 
-		{
-			t.cancel(); //stops timer
-			int wpm = (int) ((characterCount / 5) / (((double) secondsPassed) / 60)); //equation for WPM
+
+		// if there is no more text, the game screen closes and wpm is calculated
+		if (currentString == null) {
+			t.cancel(); // stops timer
+			int wpm = (int) ((characterCount / 5) / (((double) secondsPassed) / 60)); // equation for WPM
 			System.out.println("WPM: " + wpm);
-			TypeMain.primaryStage.show(); //goes back to main screen
-			gameStage.close(); //closes game screen
-		}
-		else 
-		{
+			TypeMain.primaryStage.show(); // goes back to main screen
+			gameStage.close(); // closes game screen
+		} else {
 			drawWord(true);
 		}
 	}
-	
-
-	
 }

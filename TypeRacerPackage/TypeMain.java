@@ -1,7 +1,6 @@
 package TypeRacerPackage;
 
 import javafx.application.Application;
-
 import javafx.scene.*;
 import javafx.stage.*;
 import javafx.scene.control.*;
@@ -11,20 +10,21 @@ import java.io.*;
 import javafx.scene.text.Font;
 import javafx.scene.paint.*;
 
+/*
+ * This class handles the layout of the GUI.
+ */
 public class TypeMain extends Application {
 	int mode = 0;
 	File filename = new File(this.getClass().getResource("test.txt").getFile());
 
-	
 	static Stage primaryStage;
 	TextListener getwords = null;
 
 	TextListener getWords = new TextListener(filename);
 	int characters = getWords.getCharacterCount();
-	
-	public static void main(String[] args) 
-	{
-		launch(args); //starts game
+
+	public static void main(String[] args) {
+		launch(args); // starts game
 	}
 
 	@Override
@@ -42,35 +42,33 @@ public class TypeMain extends Application {
 		title.getChildren().add(mainTop);
 		menuLay.setTop(title);
 
-		//start button
+		// start button
 		Button startGameBut = new Button("Start Game");
 		startGameBut.setOnAction(e -> {
-			primaryStage.hide(); //when the start game button is clicked, the main screen is hidden and the main pops up
+			primaryStage.hide(); // when the start game button is clicked, the main screen is hidden and the main
+									// pops up
 			TypeRacer game = new TypeRacer(mode, filename, characters);
-			
+
 		});
 		StackPane startButPane = new StackPane();
 		startButPane.setPadding(new Insets(0, 120, 0, 0));
 		startButPane.getChildren().add(startGameBut);
 
-		//Format
+		// Format
 		VBox settingsBox = new VBox(5);
 		Label setL1 = new Label("Enter Text File Location");
 		TextField enterFileLocation = new TextField();
-		enterFileLocation.setPromptText("ex. C:/Users/exampleFile/example/words.txt"); //example file input
+		enterFileLocation.setPromptText("ex. C:/Users/exampleFile/example/words.txt"); // example file input
 		enterFileLocation.setOnAction(e -> {
 			String a = new String(enterFileLocation.getText());
 			File b = new File(a);
 			File c = new File(a + ".txt");
 			System.out.println(a + "\n" + b.exists() + "\n" + c.exists());
-			if (b.exists() == false && c.exists() == false) 
-			{
+			if (b.exists() == false && c.exists() == false) {
 				startGameBut.setDisable(true);
 				startGameBut.setTextFill(Color.RED);
 				startGameBut.setText("Invalid File Location");
-			} 
-			else 
-			{
+			} else {
 				startGameBut.setDisable(false);
 				startGameBut.setTextFill(Color.BLACK);
 				startGameBut.setText("Start Game");
@@ -83,7 +81,7 @@ public class TypeMain extends Application {
 			}
 		});
 
-		//Format options
+		// Format options
 		final ToggleGroup modeButList = new ToggleGroup();
 		RadioButton mode0 = new RadioButton("Word by Word");
 		mode0.setToggleGroup(modeButList);
@@ -99,14 +97,13 @@ public class TypeMain extends Application {
 		butListMode.getChildren().addAll(mode0, mode1, mode2);
 		settingsBox.getChildren().addAll(setL1, enterFileLocation, new Label("Display Settings"), butListMode);
 
-		//Leaderboards
+		// Leaderboards
 		VBox leaderboard = new VBox(2);
 		// Left Pane
 		VBox navigation = new VBox(2);
 		navigation.setPadding(new Insets(10, 10, 10, 10));
 		menuLay.setLeft(navigation);
-		
-		
+
 		// Main Page Button
 		Button mainPageBut = new Button("Main Page");
 		mainPageBut.setPrefSize(100, 20);
@@ -125,7 +122,7 @@ public class TypeMain extends Application {
 		Button leadBtn = new Button("Leaderboards");
 		leadBtn.setPrefSize(100, 20);
 		leadBtn.setOnAction(e -> {
-			//updateHistory(5);
+			// updateHistory(5);
 			menuLay.setCenter(leaderboard);
 		});
 		navigation.getChildren().add(leadBtn);
@@ -133,11 +130,5 @@ public class TypeMain extends Application {
 		menuLay.setCenter(startButPane);
 		primaryStage.setScene(menu);
 		primaryStage.show();
-		
 	}
-	
-
-
-	
-	
 }

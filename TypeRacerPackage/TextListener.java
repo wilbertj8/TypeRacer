@@ -5,16 +5,22 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 
-
+/*
+ * Game consists of three different ways to play:
+ * 1. Word by Word (firstOpt)
+ * 2. Line by Line (secondOpt)
+ * 3. Entire text (thirdOpt)
+ */
 public class TextListener {
 	File filepath;
 	BufferedReader read;
 	boolean newWords;
 	String line = "";
 	String text;
-	Queue<String> words;
+	Queue<String> words; //used to pop off correctly typed words
 	Scanner in;
 
+	// constructor for accesing text from file
 	public TextListener(File filelocation) {
 		try {
 			read = new BufferedReader(new FileReader(filelocation));
@@ -36,6 +42,7 @@ public class TextListener {
 		}
 	}
 
+	// first option: word by word
 	public String firstOpt() {
 		System.out.println(words);
 		if (words.size() > 0)
@@ -43,6 +50,7 @@ public class TextListener {
 		return null;
 	}
 
+	// second option: line by line
 	public String secondOpt() {
 		String line = "";
 		try {
@@ -55,18 +63,15 @@ public class TextListener {
 		} catch (NullPointerException npe) {
 			line = null;
 		}
-		// System.out.println("test");
 		return line;
 	}
 
-	public int getCharacterCount()
-	{
+	public int getCharacterCount() {
 		int characterCount = 0;
 		try {
 			String s;
-			while((s = read.readLine())!=null)
-			{
-			characterCount += s.length();
+			while ((s = read.readLine()) != null) {
+				characterCount += s.length();
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -75,8 +80,9 @@ public class TextListener {
 		System.out.println(characterCount);
 		return characterCount;
 	}
-	
-	public String thirdOpt(){
+
+	// third option: entire text
+	public String thirdOpt() {
 		return text;
 	}
 }
